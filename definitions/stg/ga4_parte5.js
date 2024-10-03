@@ -26,7 +26,7 @@ SELECT
   DATE(DATE_SUB(current_date('America/Sao_Paulo'), INTERVAL ${day_r} DAY)) AS date,
   platform,
   (SELECT ep.value.string_value FROM UNNEST(event_params) AS ep WHERE ep.key = "consumption_environment") ambiente,
-  COUNT(*) AS pageviews
+  COUNT(*) AS page_views
   FROM ${ctx.ref(datasetGA4, "events_*")}
   WHERE _TABLE_SUFFIX = FORMAT_DATETIME('%Y%m%d', DATE(DATE_SUB(current_date('America/Sao_Paulo'), INTERVAL ${day_r} DAY))) AND event_name = "page_view"
   group by 1,2,3
@@ -109,10 +109,17 @@ SELECT
 )
 
 select 
-   dp.nome_schema,
-  numero_propriedade, 
-  nome_propriedade,
-  *,
+  date,
+  dp.nome_schema,
+  dp.numero_propriedade, 
+  dp.nome_propriedade,
+  video_playtimes,
+  video_views,
+  not_logged_users,
+  logged_users,
+  screen_views,
+  page_views,
+  sessions
 from total_hit
 FULL OUTER JOIN page_view USING (date,platform,ambiente)
 FULL OUTER JOIN screen_view USING (date,platform,ambiente)

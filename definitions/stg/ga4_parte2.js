@@ -121,7 +121,8 @@ select
   logged_users,
   screen_views,
   page_views,
-  sessions
+  sessions,
+  current_datetime bigquery_ingestion
 from total_hit
 FULL OUTER JOIN page_view USING (date,platform,ambiente)
 FULL OUTER JOIN screen_view USING (date,platform,ambiente)

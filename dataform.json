@@ -1,0 +1,8 @@
+{
+  "defaultSchema": "dataform",
+  "assertionSchema": "dataform_assertions",
+  "warehouse": "bigquery",
+  "defaultDatabase": "gglobo-bd-tracking-hdg-dev",
+  "defaultLocation": "US"
+}
+    

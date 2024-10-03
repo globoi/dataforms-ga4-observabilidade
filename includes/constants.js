@@ -82,40 +82,7 @@ const DATASET_PARTE6 = [
 "analytics_334876335"
 ]
 
-const DATASET_PARTE7 = [
-    "analytics_318935925", 
-    "analytics_316894734",        
-    "analytics_316972299",
-    "analytics_316902964",
-    "analytics_316918432",
-    "analytics_316973402",
-    "analytics_447094779",
-    "analytics_426317459",
-    "analytics_318939862",
-    "analytics_318922708",
-    "analytics_316944710",
-    "analytics_316963900",
-    "analytics_316884252",
-    "analytics_316921260",
-    "analytics_316934460",
-    "analytics_419235081",
-    "analytics_426335133",
-    "analytics_316960860",
-    "analytics_316932832",
-    "analytics_316977696",
-    "analytics_316929216",
-    "analytics_318917248",
-    "analytics_438247379",
-    "analytics_316942377",
-    "analytics_318878504",
-    "analytics_425698160",
-    "analytics_318896987",
-    "analytics_316933072",
-    "analytics_316962392",
 
-
-
-]
 
 const DATASUFIXO = datasufixo()
 
@@ -126,6 +93,5 @@ module.exports = {
     DATASET_PARTE4,
     DATASET_PARTE5,
     DATASET_PARTE6,
-    DATASET_PARTE7,
     DATASUFIXO
 };

@@ -113,6 +113,8 @@ select
   dp.nome_schema,
   dp.numero_propriedade, 
   dp.nome_propriedade,
+  ambiente,
+  platform,
   video_playtimes,
   video_views,
   not_logged_users,

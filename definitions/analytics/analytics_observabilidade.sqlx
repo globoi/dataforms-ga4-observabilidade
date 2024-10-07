@@ -1,0 +1,118 @@
+config {
+  type: "table",
+  schema: "ga4_observabilidade",
+  tags: ["observabilidade"]
+}
+with unir_partes as (
+SELECT *
+FROM ${ref("ga4_parte1")}p1
+WHERE bigquery_ingestion = (
+        SELECT MAX(bigquery_ingestion)
+        FROM ${ref("ga4_parte1")} ugc_inner
+        WHERE p1.numero_propriedade = ugc_inner.numero_propriedade
+          AND p1.date = ugc_inner.date and p1.ambiente = ugc_inner.ambiente and p1.platform = ugc_inner.platform)
+UNION ALL 
+
+SELECT *
+FROM  ${ref("ga4_parte2")}  p2
+WHERE bigquery_ingestion = (
+        SELECT MAX(bigquery_ingestion)
+        FROM  ${ref("ga4_parte2")} ugc_inner
+        WHERE p2.numero_propriedade = ugc_inner.numero_propriedade
+          AND p2.date = ugc_inner.date and p2.ambiente = ugc_inner.ambiente and p2.platform = ugc_inner.platform)
+
+UNION ALL
+
+SELECT *
+FROM  ${ref("ga4_parte3")} p3
+WHERE bigquery_ingestion = (
+        SELECT MAX(bigquery_ingestion)
+        FROM  ${ref("ga4_parte3")} ugc_inner
+        WHERE p3.numero_propriedade = ugc_inner.numero_propriedade
+          AND p3.date = ugc_inner.date and p3.ambiente = ugc_inner.ambiente and p3.platform = ugc_inner.platform)
+
+UNION ALL
+
+SELECT *
+FROM  ${ref("ga4_parte4")} p4
+WHERE bigquery_ingestion = (
+        SELECT MAX(bigquery_ingestion)
+        FROM ${ref("ga4_parte4")} ugc_inner
+        WHERE p4.numero_propriedade = ugc_inner.numero_propriedade
+          AND p4.date = ugc_inner.date and p4.ambiente = ugc_inner.ambiente and p4.platform = ugc_inner.platform)
+
+UNION ALL
+
+SELECT *
+FROM  ${ref("ga4_parte5")} p5
+WHERE bigquery_ingestion = (
+        SELECT MAX(bigquery_ingestion)
+        FROM ${ref("ga4_parte5")} ugc_inner
+        WHERE p5.numero_propriedade = ugc_inner.numero_propriedade
+          AND p5.date = ugc_inner.date and p5.ambiente = ugc_inner.ambiente and p5.platform = ugc_inner.platform)
+
+UNION ALL
+
+SELECT *
+FROM  ${ref("ga4_parte6")} p6
+WHERE bigquery_ingestion = (
+        SELECT MAX(bigquery_ingestion)
+        FROM ${ref("ga4_parte6")} ugc_inner
+        WHERE p6.numero_propriedade = ugc_inner.numero_propriedade
+          AND p6.date = ugc_inner.date and p6.ambiente = ugc_inner.ambiente and p6.platform = ugc_inner.platform))
+
+
+
+select DISTINCT *,
+
+ 
+  CASE
+    --Globoplay
+    WHEN nome_propriedade = "Globoplay (Consolidado)" THEN "Globoplay"
+     --Receitas
+    WHEN nome_propriedade = "Receitas Consolidado" THEN "Receitas"
+    -- Editora Globo
+    WHEN nome_propriedade IN ('Editora Globo', 'O globo', 'Extra', 'Revista Crescer', 'Revista Galileu', 'Revista Globo Rural', 'Revista GQ', 'Revista Monet', 'Revista Vogue', 'Um só Planeta', "O globo", "Autoesporte", "Assine Globo", "Casa e Jardim", "Vida de Bicho", "Assinatura Globo","Pequenas Empresas Grandes Negócios","Época Negócios","Marie Claire","Revista Quem") THEN 'Editora Globo'
+    -- Outros
+    WHEN nome_propriedade IN ("Áudio Globo","Ajuda Globo App","Technologies (https://globotechnologies.globo)","Globo ID (deprecated)", 'Videos (Fallback sem Produto)', "Portal Você + IA", "Telescope",'Backstage', 'Backstage Provision', 'Backstage Search Backup', 'Autosserviço', 'Conexão Intranet', 'Dashboards Data Federation', 'Data Mesh Platform', 'Developer Portal', 'Envie Seu Projeto', 'Globo QR', 'GloboTech', 'Portal de Estratégia & Tecnologia', 'Portal do Fornecedor', 'Portal Segurança Empresarial', 'Portal Você + IA', 'Portal Você na Nuvem', 'Videos (Fallback sem nome_propriedade)', 'Videos (Todos)',"GloboQR","Rede de conhecimento Você na Nuvem") THEN 'Outros'
+    -- SGR
+    WHEN nome_propriedade IN ('SGR', 'CBN Home', 'Futebol Globo CBN', 'Radio Globo', "BH FM") THEN 'SGR'
+    -- DFS
+    WHEN nome_propriedade = 'Cartola Express' THEN 'DFS'
+    -- Cartola
+    WHEN nome_propriedade = 'CartolaFC Consolidado' THEN 'Cartola'
+    -- Canais Globo Digital
+    WHEN nome_propriedade IN ('Combate Play', 'GENTE - Globosat', 'Premiere Play') THEN 'Canais Globo Digital'
+    -- Formatos - NIP
+    WHEN nome_propriedade = 'Formatos Publicitários GA4' THEN 'Formatos - NIP'
+    -- GAMA - NIP
+    WHEN nome_propriedade = 'Formatos Publicitários GAMA GA4' THEN 'GAMA - NIP'
+    -- Techtudo
+    WHEN nome_propriedade IN ('Forum techtudo', 'TechTudo') THEN 'Techtudo'
+    -- G1
+    WHEN nome_propriedade = 'G1 Consolidado' THEN 'G1'
+    -- GE
+    WHEN nome_propriedade = 'GE Consolidado' THEN 'GE'
+    -- GE
+    WHEN nome_propriedade in ('Gshow Consolidado',"Gshow Web (Legado)") THEN 'Gshow'
+    -- Conde Nast
+    WHEN nome_propriedade IN ('Conde Nast', 'Revista GQ', 'Revista Vogue', "Glamour") THEN 'Conde Nast'
+    -- Institucional
+    WHEN nome_propriedade IN ('Institucional', 'História Globo', 'Screening (screening.globo.com)', 'Somos Globo', "Globo Filmes") THEN 'Institucional'
+    -- Globo ADS - NIP
+    WHEN nome_propriedade IN ('Globo ADS - NIP', 'Globo SIM', 'GloboAds', 'Vitrine (Web)') THEN 'Globo ADS - NIP'
+    -- Globoplay
+    WHEN nome_propriedade = 'Globoplay' THEN 'Globoplay'
+    -- Home
+    WHEN nome_propriedade IN ('Home Consolidada', 'Memoria Globo') THEN 'Home'
+    -- Valor Econômico
+    WHEN nome_propriedade IN ('Pipeline Valor', 'Valor Economico', 'Valor International', 'Valor One', 'Valor PRO') THEN 'Valor Econômico'
+    -- Rede Globo
+    WHEN nome_propriedade = 'Portal Rede Globo' THEN 'Rede Globo'
+    -- Afiliadas
+    WHEN nome_propriedade IN ('Afiliadas',"VSharepoint - Dashboards Afiliadas") THEN 'Afiliadas'
+    -- Categoria default para nome_propriedades desconhecidos
+    ELSE 'Desconhecido'
+  END AS produto
+from  unir_partes up
+WHERE date >= "2024-07-01"

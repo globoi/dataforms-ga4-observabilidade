@@ -63,7 +63,7 @@ WHERE bigquery_ingestion = (
 
 
 
-select DISTINCT *,
+select DISTINCT * EXCEPT(video_playtimes),
 
  
   CASE
@@ -113,6 +113,7 @@ select DISTINCT *,
     WHEN nome_propriedade IN ('Afiliadas',"VSharepoint - Dashboards Afiliadas") THEN 'Afiliadas'
     -- Categoria default para nome_propriedades desconhecidos
     ELSE 'Desconhecido'
-  END AS produto
+  END AS produto,
+  video_playtimes / 3600 video_playtimes
 from  unir_partes up
 WHERE date >= "2024-07-01"
